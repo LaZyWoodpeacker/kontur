@@ -1,0 +1,2 @@
+# curl -v --cert "auth_cert.cer" "https://api.kontur.ru/kcr/v2/issues?status=preparing&status=correction"
+curl -v --header "Content-Type: application/json" --header "Authorization: Bearer ef966115-4090-3305-7f2c-63964c8b1e88" "https://api.kontur.ru/kcr/v2/issues?status=preparing&status=correction" 

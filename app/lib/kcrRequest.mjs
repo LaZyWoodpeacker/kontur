@@ -1,7 +1,7 @@
 import { ReadStream } from "fs";
 
-export const kcrApiUrl = `https://api.kontur.ru/kcr/`;
-export const kcrApiKey = `ef966115-4090-3305-7f2c-63964c8b1e88`;
+export const kcrApiUrl = `${process.env["KCRURL"]}/`;
+export const kcrApiKey = process.env["KCRKEY"];
 
 export default async function kcrRequest(
   url,

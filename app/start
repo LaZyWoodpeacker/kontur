@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cp /app/openssl.cnf /etc/ssl/openssl.cnf
+
+export KCRKEY="ef966115-4090-3305-7f2c-63964c8b1e88"
+export KCRURL="https://api.kontur.ru/kcr"
+
+export CRYPTOKEY="34689203-e824-2b5f-d23b-d88afbd24392"
+export CRYPTOURL="https://cloudtest.kontur-ca.ru:4443"
+
+if [[ $1 = "hello" ]]
+then
+curl -v --cert app/keys/cert.crt --key app/keys/private.key -H "X-KONTUR-APIKEY:$CRYPTOKEY" "$CRYPTOURL/v3/Hello"
+else
+cp /app/openssl.cnf /etc/ssl/openssl.cnf && node /app/test.mjs $1 $2
+fi

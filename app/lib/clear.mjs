@@ -1,4 +1,4 @@
-import deleteKsrApiCert from "./deleteKsrApiCert.mjs";
+import deleteKsrApiCert from "./deleteKcrApiCert.mjs";
 import getKsrApiList from "./getKsrApiList.mjs";
 
 export default async function clear() {
@@ -7,9 +7,7 @@ export default async function clear() {
     (e) => e.subjectEmail === "lazywoodpeacker@gmail.com"
   );
   const deleteResults = await Promise.all(
-    filtered.map((e) => {
-      deleteKsrApiCert(e.id);
-    })
+    filtered.map((e) => deleteKsrApiCert(e.id))
   );
   return { total, filtered: filtered?.length, deleteResults };
 }

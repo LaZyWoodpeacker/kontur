@@ -13,6 +13,7 @@ import confirmationRequests from "./lib/confirmationRequests.mjs";
 import getKsrApiList from "./lib/getKsrApiList.mjs";
 import addSignFileByTestSignature from "./lib/addSignFile.mjs";
 import signByCryptoApi from "./lib/signFileCryptoApi.mjs";
+import sendKcrRequest from "./lib/sendKcrRequest.mjs";
 
 const lastFilePath = "/app/current.issue";
 
@@ -88,7 +89,7 @@ const main = async () => {
         await uploadFile(id, "passport", "/app/scan.jpeg");
         await uploadFile(id, "naturalPersonInn", "/app/scan.jpeg");
         await uploadFile(id, "releaseStatement", "/app/scan.jpeg");
-        // await validateKcrApiCert(id);
+        await validateKcrApiCert(id);
         fs.writeFileSync(lastFilePath, id);
         return await actualCheck(id);
       } catch (e) {
@@ -96,7 +97,15 @@ const main = async () => {
         throw e;
       }
     case "checkIdentify":
-      return checkIdentify(currentId);
+      try {
+        const { actualized, status } = await getKsrApiIssue(currentId);
+        if (actualized && status === "identityVerification") {
+          return checkIdentify(currentId);
+        }
+        return `У заявки ${currentId} статус не identityVerification`;
+      } catch (e) {
+        throw e;
+      }
     case "confirm":
       return confirmationRequests(currentId);
     case "backFromLk":
@@ -116,6 +125,12 @@ const main = async () => {
       return await addSignFileByTestSignature();
     case "sign":
       return await signByCryptoApi(currentId);
+    case "sendRequest":
+      const { actualized, status } = await getKsrApiIssue(currentId);
+      if (actualized && status === "approved") {
+        return await sendKcrRequest(currentId);
+      }
+      return `У заявки ${currentId} статус не approved`;
     case "set":
       if (process.argv[3]) fs.writeFileSync(lastFilePath, process.argv[3]);
       else return "Нет guid";
@@ -126,3 +141,5 @@ const main = async () => {
 main().then(console.log).catch(console.error);
 
 // https://kcr.kontur.ru/number/8057034/issues?tab=inProgress
+// https://itest.kontur-ca.ru/Wizard/Run?formId=2de5fe8a-85fe-4a2b-9cab-1494453de935
+// http://46.17.202.75:5555/api/testsms?phone=79122694997

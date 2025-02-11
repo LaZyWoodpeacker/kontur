@@ -68,22 +68,3 @@ docker run --rm -v ./app:/app node:latest /app/start checkIdentify
 ```
 docker run --rm -v ./app:/app node:latest /app/start sign
 ```
-### Дополнительно 
-#### 1
-
-- При изменении паспортных данных заявка отклоняется correction "По данным МВД паспорт недействителен"
-- Для проверки тлс канала 
-
-```
-docker run --rm -v ./app:/app node:latest /app/start hello
-```
-
-#### 2
-
-- При загрузке МЧД подписанной тестовой 
-![Ответ ФНС](images/fnsresponse.png)
-
-- [МЧД](/app/testmhd.xml)
-- [Подпись](/app/signature.der.sig)
-
-
